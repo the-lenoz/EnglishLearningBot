@@ -10,6 +10,11 @@ from database.db import engine
 from database.models import Base
 
 
+async def on_startup_hook():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    scheduler_start()
+
 async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
@@ -17,13 +22,7 @@ async def main():
     settings_register(dp)
     stats_register(dp)
     exercise_register(dp)
-
-    # create tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    scheduler_start()
-
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, on_startup=on_startup_hook)
 
 if __name__ == "__main__":
     asyncio.run(main())
