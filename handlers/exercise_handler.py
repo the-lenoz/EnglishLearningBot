@@ -25,6 +25,7 @@ async def handle_word(message: types.Message):
         orig_word = user_pending.pop(user_id)
         is_correct = await check_translation(orig_word, message.text.strip())
         correct_trans = await translate_text(orig_word)
+        correct_trans = correct_trans.lower()
         if is_correct:
             await message.answer(msgs["correct"])
         else:
@@ -42,12 +43,13 @@ async def handle_word(message: types.Message):
             session.add(user)
             await session.commit()
 
-        text = message.text.strip()
+        text = message.text.strip().lower()
         # Ensure word exists
         result = await session.execute(select(Word).where(Word.text == text))
         word = result.scalars().first()
         if not word:
             translation = await translate_text(text)
+            translation = translation.lower()
             word = Word(text=text, translation=translation)
             session.add(word)
             await session.commit()

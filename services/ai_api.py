@@ -9,7 +9,7 @@ client = genai.Client(api_key=AI_API_KEY)
 async def translate_text(word: str) -> str:
     response = await client.aio.models.generate_content(
         model="gemini-2.0-flash-lite",
-        contents=f"Переведите слово '{word}' на русский."
+        contents=f"Переведите слово '{word}' на русский. Ответьте одним словом без дополнительных пояснений."
     )
     return response.text.strip()
 
