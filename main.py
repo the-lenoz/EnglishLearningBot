@@ -1,5 +1,5 @@
 import asyncio
-from aiogram import Bot, Dispatcher, executor
+from aiogram import Bot, Dispatcher
 from config import BOT_TOKEN
 from handlers.menu_handler import register as menu_register
 from handlers.settings_handler import register as settings_register
@@ -15,14 +15,15 @@ async def on_startup(dp: Dispatcher):
         await conn.run_sync(Base.metadata.create_all)
     scheduler_start()
 
-def main():
+async def main():
     bot = Bot(token=BOT_TOKEN)
-    dp = Dispatcher(bot)
+    dp = Dispatcher()
     menu_register(dp)
     settings_register(dp)
     stats_register(dp)
     exercise_register(dp)
-    executor.start_polling(dp, on_startup=on_startup)
+    await on_startup(dp)
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
