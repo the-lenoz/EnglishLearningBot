@@ -1,5 +1,5 @@
-from aiogram import types
-from aiogram.dispatcher import FSMContext, Dispatcher
+from aiogram import types, Dispatcher, F
+from aiogram.dispatcher import FSMContext
 from keyboards import settings_kb
 from messages import load_messages
 from database.db import get_db
@@ -18,5 +18,5 @@ async def change_reminder(call: types.CallbackQuery):
     # further FSM handling omitted for brevity
 
 def register(dp: Dispatcher):
-    dp.register_callback_query_handler(settings_menu, lambda c: c.data == "settings")
-    dp.register_callback_query_handler(change_reminder, lambda c: c.data == "change_reminder")
+    dp.callback_query.register(settings_menu, F.data=="settings")
+    dp.callback_query.register(change_reminder, F.data=="change_reminder")

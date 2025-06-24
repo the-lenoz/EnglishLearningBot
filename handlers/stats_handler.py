@@ -18,4 +18,4 @@ async def stats_menu(call: types.CallbackQuery):
     await call.answer()
 
 def register(dp: Dispatcher):
-    dp.register_callback_query_handler(stats_menu, lambda c: c.data == "stats")
+    dp.callback_query.register(stats_menu, F.data=="stats")

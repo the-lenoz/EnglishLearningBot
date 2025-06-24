@@ -17,5 +17,5 @@ async def handle_word(message: types.Message):
         pass
 
 def register(dp: Dispatcher):
-    dp.register_callback_query_handler(start_exercise, lambda c: c.data == "exercise")
-    dp.register_message_handler(handle_word)
+    dp.callback_query.register(start_exercise, F.data=="exercise")
+    dp.message.register(handle_word)
