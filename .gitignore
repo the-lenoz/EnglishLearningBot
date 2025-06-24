@@ -1,3 +1,4 @@
 .aider*
 
 /db.sqlite3
+/.env
