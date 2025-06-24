@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, LargeBinary
 from sqlalchemy.orm import relationship, declarative_base
 import datetime
 
@@ -27,6 +27,7 @@ class UserWord(Base):
     word_id = Column(Integer, ForeignKey("words.id"))
     learned_at = Column(DateTime, default=datetime.datetime.utcnow)
     repetition_stage = Column(Integer, default=1)
+    image = Column(LargeBinary, nullable=True)
 
     user = relationship("User", back_populates="words")
     word = relationship("Word")

@@ -30,8 +30,22 @@ async def handle_word(message: types.Message):
             await message.answer(msgs["correct"])
         else:
             await message.answer(msgs["incorrect"].format(translation=correct_trans))
-        img = await generate_image(orig_word)
-        await message.answer_photo(photo=BufferedInputFile(img, "image.jpg"), caption=msgs["flashcard"].format(word=orig_word, translation=correct_trans))
+        # retrieve stored image from DB
+        async for session in get_db():
+            # find current user
+            user = (await session.execute(
+                select(User).where(User.telegram_id == user_id)
+            )).scalar_one()
+            # find saved flashcard
+            result = await session.execute(
+                select(UserWord).join(Word).where(
+                    UserWord.user_id == user.id,
+                    Word.text == orig_word
+                )
+            )
+            uw = result.scalars().first()
+            img_bytes = uw.image
+        await message.answer_photo(photo=BufferedInputFile(img_bytes, "image.jpg"), caption=msgs["flashcard"].format(word=orig_word, translation=correct_trans))
         return
 
     async for session in get_db():
@@ -62,9 +76,10 @@ async def handle_word(message: types.Message):
         user_word = result.scalars().first()
 
         if not user_word:
-            # First time seeing this word: create learning entry and send flashcard
+            # First time seeing this word: create learning entry, save & send flashcard
             img = await generate_image(text)
-            session.add(UserWord(user_id=user.id, word_id=word.id))
+            new_uw = UserWord(user_id=user.id, word_id=word.id, image=img)
+            session.add(new_uw)
             await session.commit()
             await message.answer_photo(photo=BufferedInputFile(img, "image.jpg"), caption=msgs["flashcard"].format(word=text, translation=translation))
         else:
