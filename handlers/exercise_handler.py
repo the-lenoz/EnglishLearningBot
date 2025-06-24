@@ -2,6 +2,7 @@ from io import BytesIO
 
 from aiogram import types, F, Dispatcher
 from aiogram.types import BufferedInputFile
+from aiogram.enums import ChatAction
 
 from messages import load_messages
 from services.ai_api import generate_image, translate_text, check_translation
@@ -19,6 +20,7 @@ async def start_exercise(call: types.CallbackQuery):
     await call.answer()
 
 async def handle_word(message: types.Message):
+    await message.bot.send_chat_action(message.chat.id, ChatAction.TYPING)
     msgs = load_messages()
     user_id = message.from_user.id
 

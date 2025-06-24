@@ -1,4 +1,5 @@
 from aiogram import types, F, Dispatcher
+from aiogram.enums import ChatAction
 
 from database.db import get_db
 from database.models import User
@@ -6,6 +7,7 @@ from messages import load_messages
 
 
 async def stats_menu(call: types.CallbackQuery):
+    await call.bot.send_chat_action(call.message.chat.id, ChatAction.TYPING)
     session_gen = get_db()
     async for session in session_gen:
         user = (await session.execute(
