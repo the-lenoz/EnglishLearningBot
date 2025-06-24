@@ -18,6 +18,8 @@ async def on_startup_hook():
 async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
+    from middlewares.typing_middleware import TypingMiddleware
+    dp.update.middleware(TypingMiddleware())
     menu_register(dp)
     settings_register(dp)
     stats_register(dp)
