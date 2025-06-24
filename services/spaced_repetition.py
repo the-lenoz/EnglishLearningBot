@@ -20,11 +20,11 @@ def schedule_repetition(bot, user_id: int, word: str, learned_at: datetime = Non
     Schedule spaced repetition exercises for a word.
     Stages 1–4 use next_interval delays from the learned_at timestamp.
     """
-    base_time = learned_at or datetime.utcnow()
+    base_time = learned_at or datetime.now()
     for stage in range(1, 5):
         run_time = base_time + next_interval(stage)
         scheduler.add_job(
-            lambda u=user_id, w=word: asyncio.create_task(send_scheduled_exercise(bot, u)),
+            lambda u=user_id, w=word: asyncio.create_task(send_scheduled_exercise(bot, u, w)),
             'date',
             run_date=run_time,
             id=f"repetition_{user_id}_{word}_{stage}"
