@@ -17,8 +17,8 @@ class User(Base):
 class Word(Base):
     __tablename__ = "words"
     id = Column(Integer, primary_key=True, index=True)
-    text = Column(String, unique=True, index=True)
-    translation = Column(String)
+    en = Column(String, unique=True, index=True)
+    ru = Column(String, unique=True, index=True)
 
 class UserWord(Base):
     __tablename__ = "user_words"

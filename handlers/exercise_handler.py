@@ -7,7 +7,7 @@ from messages import load_messages
 from services.ai_api import generate_image, translate_text, check_translation
 from database.db import get_db
 from database.models import Word, UserWord, User
-from sqlalchemy import select
+from sqlalchemy import select, or_
 # track users awaiting translation
 user_pending = {}
 
@@ -58,17 +58,22 @@ async def handle_word(message: types.Message):
             await session.commit()
 
         text = message.text.strip().lower()
-        # Ensure word exists
-        result = await session.execute(select(Word).where(Word.text == text))
+        # Search word in either language
+        result = await session.execute(
+            select(Word).where(or_(Word.en == text, Word.ru == text))
+        )
         word = result.scalars().first()
         if not word:
+            # new English word
             translation = await translate_text(text)
             translation = translation.lower()
-            word = Word(text=text, translation=translation)
+            word = Word(en=text, ru=translation)
             session.add(word)
             await session.commit()
+        elif word.en == text:
+            translation = word.ru
         else:
-            translation = word.translation
+            translation = word.en
 
         # Check if user has learned this word
         result = await session.execute(select(UserWord).where(
