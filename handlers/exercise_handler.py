@@ -1,4 +1,4 @@
-from aiogram import types
+from aiogram import types, F
 from aiogram.dispatcher import Dispatcher
 from messages import load_messages
 from services.ai_api import generate_image, translate_text, check_translation
