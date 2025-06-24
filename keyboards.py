@@ -5,9 +5,9 @@ def main_menu_kb():
     msgs = load_messages()
     kb = InlineKeyboardMarkup(row_width=2)
     kb.add(
-        InlineKeyboardButton(msgs["button_stats"], callback_data="stats"),
-        InlineKeyboardButton(msgs["button_settings"], callback_data="settings"),
-        InlineKeyboardButton(msgs["button_exercise"], callback_data="exercise")
+        InlineKeyboardButton(text=msgs["button_stats"], callback_data="stats"),
+        InlineKeyboardButton(text=msgs["button_settings"], callback_data="settings"),
+        InlineKeyboardButton(text=msgs["button_exercise"], callback_data="exercise")
     )
     return kb
 
