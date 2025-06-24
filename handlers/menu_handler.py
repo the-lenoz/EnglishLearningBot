@@ -1,12 +1,14 @@
 from aiogram import types, Dispatcher, F
 from aiogram.filters import Command
+from aiogram.types import FSInputFile
+
 from keyboards import main_menu_kb
 from messages import load_messages
 
 async def cmd_start(message: types.Message):
     msgs = load_messages()
     await message.answer_photo(
-        photo=open("static/main.jpg", "rb"),
+        photo=FSInputFile("static/main.jpg"),
         caption=msgs["main_menu_text"],
         reply_markup=main_menu_kb()
     )
