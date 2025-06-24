@@ -22,8 +22,7 @@ async def main():
     settings_register(dp)
     stats_register(dp)
     exercise_register(dp)
-    await on_startup(dp)
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, on_startup=on_startup)
 
 if __name__ == "__main__":
     asyncio.run(main())
