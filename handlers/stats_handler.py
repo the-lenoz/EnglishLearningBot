@@ -1,5 +1,4 @@
-from aiogram import types, F
-from aiogram.dispatcher import Dispatcher
+from aiogram import types, F, Dispatcher
 from messages import load_messages
 from database.db import get_db
 from database.models import User, UserWord
