@@ -1,4 +1,8 @@
+from io import BytesIO
+
 from aiogram import types, F, Dispatcher
+from aiogram.types import BufferedInputFile
+
 from messages import load_messages
 from services.ai_api import generate_image, translate_text, check_translation
 from database.db import get_db
@@ -43,7 +47,7 @@ async def handle_word(message: types.Message):
             img = await generate_image(text)
             session.add(UserWord(user_id=user.id, word_id=word.id))
             await session.commit()
-            await message.answer_photo(photo=img, caption=msgs["flashcard"].format(word=text, translation=translation))
+            await message.answer_photo(photo=BufferedInputFile(img, "image.jpg"), caption=msgs["flashcard"].format(word=text, translation=translation))
         else:
             # Word already learned: ask for translation
             await message.answer(msgs["ask_translation"].format(word=text))
