@@ -9,11 +9,6 @@ from services.scheduler import start as scheduler_start
 from database.db import engine
 from database.models import Base
 
-async def on_startup(dp: Dispatcher):
-    # create tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    scheduler_start()
 
 async def main():
     bot = Bot(token=BOT_TOKEN)
@@ -22,7 +17,13 @@ async def main():
     settings_register(dp)
     stats_register(dp)
     exercise_register(dp)
-    await dp.start_polling(bot, on_startup=on_startup)
+
+    # create tables
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    scheduler_start()
+
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     asyncio.run(main())
