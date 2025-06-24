@@ -27,5 +27,5 @@ def schedule_repetition(bot, user_id: int, word: str, learned_at: datetime = Non
             lambda u=user_id, w=word: asyncio.create_task(send_scheduled_exercise(bot, u)),
             'date',
             run_date=run_time,
-            id=f"repetition_{user_id}_{w}_{stage}"
+            id=f"repetition_{user_id}_{word}_{stage}"
         )
