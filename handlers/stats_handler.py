@@ -11,8 +11,8 @@ async def stats_menu(call: types.CallbackQuery):
         )).scalar_one_or_none()
         # calculate stats...
     msgs = load_messages()
-    await call.message.edit_caption(
-        caption=msgs["stats_text"].format(words=0, reps=0, exs=0, pct=0, streak=0)
+    await call.message.answer(
+        msgs["stats_text"].format(words=0, reps=0, exs=0, pct=0, streak=0)
     )
     await call.answer()
 
