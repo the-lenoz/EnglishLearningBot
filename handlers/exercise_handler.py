@@ -15,6 +15,7 @@ from services.user_current_data import user_pending
 
 
 async def start_exercise(call: types.CallbackQuery):
+    await call.bot.send_chat_action(call.message.chat.id, ChatAction.TYPING)
     msgs = load_messages()
     await call.message.answer(msgs["prompt_word"])
     await call.answer()
