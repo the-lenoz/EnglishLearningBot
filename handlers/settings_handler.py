@@ -12,7 +12,8 @@ async def settings_menu(call: types.CallbackQuery):
     await call.answer()
 
 async def change_reminder(call: types.CallbackQuery):
-    await call.message.answer("Enter new reminder time (HH:MM):")
+    msgs = load_messages()
+    await call.message.answer(msgs["enter_reminder_prompt"])
     await call.answer()
     # further FSM handling omitted for brevity
 

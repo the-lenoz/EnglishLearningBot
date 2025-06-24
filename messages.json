@@ -1,11 +1,17 @@
 {
-  "start": "Welcome to English Learning Bot!",
-  "main_menu_text": "Choose an option:",
-  "stats_text": "📊 Your statistics:\nLearned words: {words}\nRepetitions: {reps}\nExercises: {exs}\nAccuracy: {pct}%\nStreak days: {streak}",
-  "settings_text": "⏰ Set reminder time (HH:MM):",
-  "reminder_text": "It's time for your English exercise! 📝",
-  "ask_translation": "Translate the word: {word}",
+  "start": "Добро пожаловать в Бот по изучению английского!",
+  "main_menu_text": "Выберите опцию:",
+  "stats_text": "📊 Ваша статистика:\nИзучено слов: {words}\nПовторений: {reps}\nУпражнений: {exs}\nТочность: {pct}%\nДней в ударном режиме: {streak}",
+  "settings_text": "⏰ Установите время напоминания (ЧЧ:ММ):",
+  "reminder_text": "Пора заняться английским! 📝",
+  "ask_translation": "Переведите слово: {word}",
   "flashcard": "🃏 {word} — {translation}",
-  "correct": "✅ Correct!",
-  "incorrect": "❌ Incorrect. The right answer is: {translation}"
+  "correct": "✅ Верно!",
+  "incorrect": "❌ Неверно. Правильный ответ: {translation}",
+  "button_stats": "📈 Статистика",
+  "button_settings": "⚙️ Настройки",
+  "button_exercise": "📝 Начать упражнение",
+  "button_change_reminder": "Изменить время напоминания",
+  "prompt_word": "Отправьте слово для практики.",
+  "enter_reminder_prompt": "Введите новое время напоминания (ЧЧ:ММ):"
 }
