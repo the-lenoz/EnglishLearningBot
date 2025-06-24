@@ -7,7 +7,6 @@ def main_menu_kb():
     builder = InlineKeyboardBuilder()
     builder.button(text=msgs["button_stats"], callback_data="stats")
     builder.button(text=msgs["button_settings"], callback_data="settings")
-    builder.button(text=msgs["button_exercise"], callback_data="exercise")
     builder.adjust(2)
     return builder.as_markup()
 
