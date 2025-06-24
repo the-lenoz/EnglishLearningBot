@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher import Dispatcher
 from messages import load_messages
-from services.ai_api import generate_image
+from services.ai_api import generate_image, translate_text, check_translation
 from database.db import get_db
 from database.models import Word, UserWord, User
 
