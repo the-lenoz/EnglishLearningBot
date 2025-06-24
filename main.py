@@ -8,6 +8,7 @@ from handlers.exercise_handler import register as exercise_register
 from services.scheduler import start as scheduler_start
 from database.db import engine
 from database.models import Base
+from middlewares.typing_middleware import TypingMiddleware
 
 
 async def on_startup_hook():
@@ -18,8 +19,7 @@ async def on_startup_hook():
 async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
-    from middlewares.typing_middleware import TypingMiddleware
-    dp.update.middleware(TypingMiddleware())
+    dp.update.outer_middleware(TypingMiddleware())
     menu_register(dp)
     settings_register(dp)
     stats_register(dp)

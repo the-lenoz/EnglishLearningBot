@@ -8,8 +8,10 @@ from services.ai_api import generate_image, translate_text, check_translation
 from database.db import get_db
 from database.models import Word, UserWord, User
 from sqlalchemy import select, or_
-# track users awaiting translation
-user_pending = {}
+
+from services.spaced_repetition import schedule_repetition
+from services.user_current_data import user_pending
+
 
 async def start_exercise(call: types.CallbackQuery):
     msgs = load_messages()
@@ -40,7 +42,7 @@ async def handle_word(message: types.Message):
             result = await session.execute(
                 select(UserWord).join(Word).where(
                     UserWord.user_id == user.id,
-                    Word.text == orig_word
+                    or_(Word.ru == orig_word, Word.en == orig_word, Word.ru == correct_trans, Word.en == correct_trans)
                 )
             )
             uw = result.scalars().first()
@@ -58,18 +60,22 @@ async def handle_word(message: types.Message):
             await session.commit()
 
         text = message.text.strip().lower()
+        translation = (await translate_text(text)).lower()
         # Search word in either language
         result = await session.execute(
-            select(Word).where(or_(Word.en == text, Word.ru == text))
+            select(Word).where(or_(Word.en == text, Word.ru == text, Word.en == translation, Word.ru == translation))
         )
         word = result.scalars().first()
         if not word:
             # new English word
-            translation = await translate_text(text)
-            translation = translation.lower()
             word = Word(en=text, ru=translation)
             session.add(word)
             await session.commit()
+            schedule_repetition(
+                bot=message.bot,
+                user_id=message.from_user.id,
+                word=text
+            )
         elif word.en == text:
             translation = word.ru
         else:
@@ -82,11 +88,17 @@ async def handle_word(message: types.Message):
 
         if not user_word:
             # First time seeing this word: create learning entry, save & send flashcard
-            img = await generate_image(text)
+            try:
+                img = await generate_image(text)
+                await message.answer_photo(photo=BufferedInputFile(img, "image.jpg"),
+                                       caption=msgs["flashcard"].format(word=text, translation=translation))
+            except TypeError:
+                await message.answer(text=msgs["flashcard"].format(word=text, translation=translation))
+
             new_uw = UserWord(user_id=user.id, word_id=word.id, image=img)
             session.add(new_uw)
             await session.commit()
-            await message.answer_photo(photo=BufferedInputFile(img, "image.jpg"), caption=msgs["flashcard"].format(word=text, translation=translation))
+
         else:
             # Word already learned: ask for translation next
             user_pending[user_id] = text
