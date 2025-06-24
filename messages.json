@@ -1,0 +1,11 @@
+{
+  "start": "Welcome to English Learning Bot!",
+  "main_menu_text": "Choose an option:",
+  "stats_text": "📊 Your statistics:\nLearned words: {words}\nRepetitions: {reps}\nExercises: {exs}\nAccuracy: {pct}%\nStreak days: {streak}",
+  "settings_text": "⏰ Set reminder time (HH:MM):",
+  "reminder_text": "It's time for your English exercise! 📝",
+  "ask_translation": "Translate the word: {word}",
+  "flashcard": "🃏 {word} — {translation}",
+  "correct": "✅ Correct!",
+  "incorrect": "❌ Incorrect. The right answer is: {translation}"
+}
