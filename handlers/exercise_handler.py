@@ -6,7 +6,7 @@ from database.models import Word, UserWord, User
 
 async def start_exercise(call: types.CallbackQuery):
     msgs = load_messages()
-    await call.message.edit_text(msgs["prompt_word"])
+    await call.message.answer(msgs["prompt_word"])
     await call.answer()
 
 async def handle_word(message: types.Message):

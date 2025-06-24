@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 async def settings_menu(call: types.CallbackQuery):
     msgs = load_messages()
-    await call.message.edit_text(msgs["settings_text"], reply_markup=settings_kb())
+    await call.message.answer(msgs["settings_text"], reply_markup=settings_kb())
     await call.answer()
 
 async def change_reminder(call: types.CallbackQuery):

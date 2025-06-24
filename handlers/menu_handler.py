@@ -19,5 +19,5 @@ def register(dp: Dispatcher):
 
 async def main_menu(call: types.CallbackQuery):
     msgs = load_messages()
-    await call.message.edit_caption(msgs["main_menu_text"], reply_markup=main_menu_kb())
+    await call.message.answer(msgs["main_menu_text"], reply_markup=main_menu_kb())
     await call.answer()
