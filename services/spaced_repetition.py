@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime
-import asyncio
 from services.scheduler import send_scheduled_exercise, scheduler
 
 # Returns delay until next repetition based on stage
@@ -24,8 +23,9 @@ def schedule_repetition(bot, user_id: int, word: str, learned_at: datetime = Non
     for stage in range(1, 5):
         run_time = base_time + next_interval(stage)
         scheduler.add_job(
-            lambda u=user_id, w=word: asyncio.create_task(send_scheduled_exercise(bot, u, w)),
+            send_scheduled_exercise,
             'date',
             run_date=run_time,
+            args=(bot, user_id, word),
             id=f"repetition_{user_id}_{word}_{stage}"
         )
