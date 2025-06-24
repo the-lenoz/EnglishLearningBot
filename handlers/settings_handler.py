@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher, F
-from aiogram.dispatcher import FSMContext
+from aiogram.fsm.context import FSMContext
 from keyboards import settings_kb
 from messages import load_messages
 from database.db import get_db
